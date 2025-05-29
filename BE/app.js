@@ -28,7 +28,7 @@ app.get('/', (req, res) => {
 });
 
 association();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3000;
 
 // console.log("🔥 App started");
 // console.log("ENV PORT:", PORT);
@@ -37,7 +37,7 @@ const PORT = process.env.PORT || 5000;
 // console.log("isProduction:", isProduction);
 
 app.listen(
-    PORT, '0.0.0.0', 
+    PORT, 
     () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
