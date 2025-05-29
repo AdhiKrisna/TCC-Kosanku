@@ -3,5 +3,5 @@ WORKDIR /app
 COPY . .
 RUN npm install
 # Set the PORT env var (though Cloud Run will override it)
-EXPOSE 3000
+EXPOSE 8080
 CMD ["node", "index.js"]
