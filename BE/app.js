@@ -28,6 +28,7 @@ app.get('/', (req, res) => {
 });
 
 association();
-app.listen(3000, () => {
-    console.log('Backend server is running on http://localhost:3000');
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
 });
