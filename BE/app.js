@@ -29,6 +29,13 @@ app.get('/', (req, res) => {
 
 association();
 const PORT = process.env.PORT || 5000;
+
+// console.log("🔥 App started");
+// console.log("ENV PORT:", PORT);
+// console.log("NODE_ENV:", process.env.NODE_ENV);
+// const isProduction = process.env.NODE_ENV === "production";
+// console.log("isProduction:", isProduction);
+
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

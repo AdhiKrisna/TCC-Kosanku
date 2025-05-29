@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const isProduction = process.env.NODE_ENV === "production";
-const keyFilename =  path.resolve(process.env.GCS_KEY_FILE);
+const keyFilename =  isProduction ? null : path.resolve(process.env.GCS_KEY_FILE);
 const storage = isProduction
   ? new Storage() // Use default service account in Cloud Build
   : new Storage({ //ini untuk local development
