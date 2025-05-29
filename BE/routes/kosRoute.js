@@ -1,7 +1,7 @@
 import express from 'express';
-import { getAllKos, getKosById, createKos,deleteKos,updateKos } from '../controllers/KosController.js';
+import { getAllKos, getKosById, createKos,deleteKos,updateKos } from '../controllers/kosController.js';
 import { verifyToken } from '../middlewares/VerifyToken.js';
-import upload, { uploadToGCS } from '../middlewares/gcsMulter.js'; // pastikan path ini sesuai dengan struktur project Anda
+import upload, { uploadToGCS } from '../middlewares/gcsMulter.js';
 
 const KosRouter = express.Router();
 
