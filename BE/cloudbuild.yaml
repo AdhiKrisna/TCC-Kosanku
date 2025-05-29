@@ -15,6 +15,7 @@ steps:
         "run", "deploy", "kosanku-tcc",
         "--image", "gcr.io/$PROJECT_ID/kosanku-tcc",
         "--port", "5000",
+        "--timeout", "1000s",            # Increase timeout
         "--region", "us-central1",
         "--allow-unauthenticated"
       ]
