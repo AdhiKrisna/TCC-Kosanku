@@ -10,7 +10,7 @@ export const getAccessToken = async (req, res) => {
         if (!refreshToken) {
             return res.status(401).json({
                 status: "error",
-                message: "Refresh not found"
+                message: "Refresh token not found"
             });
         }
 
@@ -20,7 +20,7 @@ export const getAccessToken = async (req, res) => {
         if (!user.refresh_token) {
             return res.status(401).json({
                 status: "error",
-                message: "User not found"
+                message: "User not found or refresh token is invalid"
             });
         }
 
@@ -38,6 +38,7 @@ export const getAccessToken = async (req, res) => {
                             message: "Invalid refresh token"
                         });
                     }
+                    //if refresh token valid, get user data
                     //convert user ke object JSON
                     const userPlain = user.toJSON();
 

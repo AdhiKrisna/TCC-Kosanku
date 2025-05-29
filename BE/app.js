@@ -1,6 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import KosRouter from './routes/KosRoute.js';
+import KosRouter from './routes/kosRoute.js';
 import UserRouter from './routes/userRoute.js';
 import KosImageRouter from './routes/kosImageRoute.js';
 import association from './config/assoc.js';

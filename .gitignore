@@ -1,1 +1,2 @@
 BE/.env
+BE/secrets/gcs-key.json

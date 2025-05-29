@@ -1,5 +1,6 @@
 import KosImageModel from "../models/kosImageModel.js";
 import KosModel from "../models/kosModel.js";
+import bucket from "../config/gcs.js";
 
 //Read all images
 export async function getAllKosImages(req, res) {
@@ -49,11 +50,10 @@ export async function createKosImage(req, res) {
       files.map(file =>
         KosImageModel.create({
           kos_id: kosId,       // pake kosId dari param langsung
-          image_url: file.path,
+          image_url: file.gcsUrl,
         })
       )
     );
-
     res.status(201).json({
       status: "success",
       message: "Image created successfully",
@@ -63,7 +63,8 @@ export async function createKosImage(req, res) {
     console.error("Error creating kos image:", error);
     res.status(500).json({
       status: "error",
-      message: "Internal server error"
+      message: "Failed to save and upload image to Cloud Storage",
+      error: error.message
     });
   }
 }
@@ -109,6 +110,13 @@ export async function updateKosImage(req, res) {
       message: "Image file are required"
     });
   }
+  // check if image upload > 1
+  if (req.files && req.files.length > 1) {
+    return res.status(400).json({
+      status: "error",
+      message: "Only one image can be updated at a time"
+    });
+  }
 
   try {
     const image = await KosImageModel.findByPk(id);
@@ -118,8 +126,22 @@ export async function updateKosImage(req, res) {
         message: "Image not found"
       });
     }
-    image.image_url = file.path;
+
+    // Update the image URL with the new file storage parh
+    const oldImagePath = image.image_url.split(`/${bucket.name}/`)[1]; // Get the old image file nam
+    try {
+      await bucket.file(oldImagePath).delete();
+    } catch (err) {
+      res.status(500).json({
+        status: "error",
+        message: "Failed to delete old image from Cloud Storage",
+        error: err.message
+      });
+    }
+
+    image.image_url = file.gcsUrl;
     await image.save();
+
     res.status(200).json({
       status: "success",
       message: "Image updated successfully",
@@ -146,6 +168,18 @@ export async function deleteKosImage(req, res) {
       });
     }
 
+    // Delete the image file from Cloud Storage
+    const fileName = image.image_url.split(`/${bucket.name}/`)[1]; 
+    await bucket.file(fileName).delete().catch(err => {
+      console.error("Failed deleting image from Cloud Storage (might not exist):", err.message);
+      return res.status(500).json({
+        status: "error",
+        message: "Failed to delete image from Cloud Storage",
+        error: err.message
+      });
+    });
+
+    // Delete dari db
     await image.destroy();
     res.status(200).json({
       status: "success",
