@@ -7,12 +7,12 @@ const association = async () => {
     try {
         // Set up the relationship
         KosModel.belongsTo(UserModel, {
-            foreignKey: 'pemilik_kos_id',
+            foreignKey: 'owner_kos_id',
             as: 'owner'
         });
 
         UserModel.hasMany(KosModel, {
-            foreignKey: 'pemilik_kos_id',
+            foreignKey: 'owner_kos_id',
             as: 'kosList'
         });
 

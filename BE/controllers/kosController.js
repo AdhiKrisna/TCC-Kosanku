@@ -10,7 +10,7 @@ export async function getAllKos(req, res) {
             include: {
                 model: UserModel,
                 as: 'owner',
-                attributes: ['user_id', 'user_name']
+                attributes: ['user_id', 'user_name', 'user_phone']
             }
         });
         res.status(200).json({
@@ -24,13 +24,39 @@ export async function getAllKos(req, res) {
     }
 }
 
-export async function createKos(req, res) {
-    const { kos_name, kos_description, pemilik_kos_id, kos_latitude, kos_longitude } = req.body;
+export async function getKosById(req, res) {
+    const { id } = req.params;
+    try {
+        const kos = await KosModel.findByPk(id, {
+            include: {
+                model: UserModel,
+                as: 'owner',
+                attributes: ['user_id', 'user_name', 'user_phone']
+            }
+        });
 
-    if (!kos_name || !pemilik_kos_id || kos_latitude === undefined || kos_longitude === undefined) {
+        if (!kos) {
+            return res.status(404).json({ status: "error", message: "Kos not found" });
+        }
+
+        res.status(200).json({
+            status: "success",
+            message: "Kos fetched successfully",
+            data: kos
+        });
+    } catch (error) {
+        console.error("Error fetching kos by ID:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export async function createKos(req, res) {
+    const {kos_name, kos_address, kos_description, kos_rules, category, link_gmaps, room_available, max_price, min_price, owner_kos_id, kos_latitude, kos_longitude } = req.body;
+    // if except kos_description and kos_rules are required
+    if (!kos_name || !kos_address || !category || !link_gmaps || room_available === undefined || max_price === undefined || min_price === undefined || !owner_kos_id || kos_latitude === undefined || kos_longitude === undefined) {
         return res.status(400).json({
             status: "error",
-            message: "Kos name, kos owner, latitude, and longitude are required"
+            message: "Kos name, kos address, category, link_gmaps, room_available, max_price, min_price, owner_kos_id, latitude, and longitude are required"
         });
     }
 
@@ -42,18 +68,24 @@ export async function createKos(req, res) {
     }
 
     try {
-        const owner = await UserModel.findByPk(pemilik_kos_id);
+        const owner = await UserModel.findByPk(owner_kos_id);
         if (!owner) {
             return res.status(404).json({
                 status: "error",
                 message: "Owner not found"
             });
         }
-
         const newKos = await KosModel.create({
             kos_name,
+            kos_address,
             kos_description,
-            pemilik_kos_id,
+            kos_rules,
+            category,
+            link_gmaps,
+            room_available,
+            max_price,
+            min_price,
+            owner_kos_id,
             kos_latitude,
             kos_longitude
         });
@@ -78,41 +110,14 @@ export async function createKos(req, res) {
     }
 }
 
-
-export async function getKosById(req, res) {
-    const { id } = req.params;
-    try {
-        const kos = await KosModel.findByPk(id, {
-            include: {
-                model: UserModel,
-                as: 'owner',
-                attributes: ['user_id', 'user_name']
-            }
-        });
-
-        if (!kos) {
-            return res.status(404).json({ status: "error", message: "Kos not found" });
-        }
-
-        res.status(200).json({
-            status: "success",
-            message: "Kos fetched successfully",
-            data: kos
-        });
-    } catch (error) {
-        console.error("Error fetching kos by ID:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-}
-
 export async function updateKos(req, res) {
     const { id } = req.params;
-    const { kos_name, kos_description, kos_latitude, kos_longitude } = req.body;
-
-    if (!kos_name || kos_latitude === undefined || kos_longitude === undefined) {
+    const {kos_name, kos_address, kos_description, kos_rules, category, link_gmaps, room_available, max_price, min_price, kos_latitude, kos_longitude } = req.body;
+    // if except kos_description and kos_rules are required
+    if (!kos_name || !kos_address || !category || !link_gmaps || room_available === undefined || max_price === undefined || min_price === undefined || kos_latitude === undefined || kos_longitude === undefined) {
         return res.status(400).json({
             status: "error",
-            message: "Kos name, latitude, and longitude are required"
+            message: "Kos name, kos address, category, link_gmaps, room_available, max_price, min_price, latitude, and longitude are required"
         });
     }
 
@@ -125,19 +130,19 @@ export async function updateKos(req, res) {
             });
         }
 
-        // const owner = await UserModel.findByPk(pemilik_kos_id);
-        // if (!owner) {
-        //     return res.status(404).json({
-        //         status: "error",
-        //         message: "Owner not found"
-        //     });
-        // }
-
+        // Update kos details
         kos.kos_name = kos_name;
+        kos.kos_address = kos_address;
         kos.kos_description = kos_description;
-        // kos.pemilik_kos_id = pemilik_kos_id;
+        kos.kos_rules = kos_rules;
+        kos.category = category;
+        kos.link_gmaps = link_gmaps;
+        kos.room_available = room_available;
+        kos.max_price = max_price;
+        kos.min_price = min_price;
         kos.kos_latitude = kos_latitude;
         kos.kos_longitude = kos_longitude;
+        
         await kos.save();
 
         res.status(200).json({
