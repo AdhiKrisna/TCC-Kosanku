@@ -15,7 +15,8 @@ const KosImageRouter = express.Router();
 
 // Route definitions
 KosImageRouter.get("/kos-images/", getAllKosImages); //ga kepake sih
-KosImageRouter.get("/kos-images/kos/:kosId",verifyToken, getImagesByKosID);
+KosImageRouter.get("/kos-images/kos/:kosId", getImagesByKosID);
+
 KosImageRouter.post("/kos-images/kos/:kosId", verifyToken, upload.array("image_url", 5), uploadToGCS ,createKosImage);
 KosImageRouter.put("/kos-images/:id",verifyToken, upload.single("image_url"),uploadToGCS, updateKosImage);
 KosImageRouter.delete("/kos-images/:id",verifyToken, deleteKosImage);
