@@ -151,7 +151,7 @@ export async function logout(req, res) {
 
 export async function updateProfile(req, res) {
   const { id } = req.params;
-  const { user_name, user_phone, user_email } = req.body;
+  const { user_name, user_phone, user_email, user_password } = req.body;
 
   try {
     const user = await UserModel.findByPk(id);
@@ -183,6 +183,10 @@ export async function updateProfile(req, res) {
     user.user_name = user_name;
     user.user_phone = user_phone;
     user.user_email = user_email;
+    if (user_password) {
+      const hashedPassword = await bcrypt.hash(user_password, 10);
+      user.user_password = hashedPassword;
+    }
 
     await user.save();
 
