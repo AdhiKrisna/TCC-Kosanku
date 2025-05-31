@@ -50,6 +50,32 @@ export async function getKosById(req, res) {
     }
 }
 
+export async function getKosByOwnerId(req, res) {
+    const { id } = req.params;
+    try {
+        const kosList = await KosModel.findAll({
+            where: { owner_kos_id: id },
+            include: {
+                model: UserModel,
+                as: 'owner',
+                attributes: ['user_id', 'user_name', 'user_phone']
+            }
+        });
+        if (kosList.length === 0) {
+            return res.status(404).json({ status: "error", message: "No kos found for this owner" });
+        }
+        res.status(200).json({
+            status: "success",
+            message: "Kos fetched successfully",
+            data: kosList
+        });
+    } catch (error) {
+        console.error("Error fetching kos by owner ID:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+
 export async function createKos(req, res) {
     const {kos_name, kos_address, kos_description, kos_rules, category, link_gmaps, room_available, max_price, min_price, owner_kos_id, kos_latitude, kos_longitude } = req.body;
     // if except kos_description and kos_rules are required
