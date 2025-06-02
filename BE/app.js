@@ -24,7 +24,7 @@ app.use(UserRouter);
 app.use(KosImageRouter);
 
 app.get('/', (req, res) => {
-    res.send('Hello from the backend!');
+    res.send('Hello from the backend! CI/CD TST');
 });
 
 association();
