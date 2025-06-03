@@ -1,3 +1,53 @@
+.button-peran {
+  padding: 1rem 2rem;
+  font-size: 2rem;
+  background-color: #78B3CE;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.button-tombol {
+  padding: 1rem 2rem;
+  font-size: 2rem;
+  background-color: #133E87;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.button-tombol:hover {
+  background-color: #78B3CE;
+}
+.button-peran:hover {
+  background-color: #4338ca;
+}
+
+.font-utama {
+  font-family: 'Poppins', sans-serif;
+  color:#133E87
+}
+
+.inputfield{
+  width: 20%;
+  padding: 1rem;
+  font-size: 1.5rem;
+  border: 2px solid #78B3CE;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+}
+
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
