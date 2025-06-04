@@ -29,7 +29,7 @@ const association = async () => {
         });
 
         // Sync database
-        db_instance.sync()
+        db_instance.sync({alter: true})
             .then(() => {
                 console.log("All tables and associations synced successfully.");
             })
