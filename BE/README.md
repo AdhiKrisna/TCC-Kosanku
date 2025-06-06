@@ -6,19 +6,27 @@ Kosanku is a simple RESTful API designed to connect boarding house (kos) owners 
 
 ## **🧭 Getting Started Guide**
 
-To start using the Kosanku API, follow the steps below:
+## **🧭 Getting Started Guide**
 
-- Set up your backend environment (Node.js + Express).
-    
-- Configure your database connection and ensure the `KosModel` is synced correctly.
-    
-- Use an API client like Postman to interact with the endpoints.
-    
-- (Optional) Add authentication middleware for secure access.
-    
+To start using the KosanKu API, follow the steps below:
 
-> ⚠️ _This version does not require authentication yet._ 
-  
+Clone the repository and set up your backend environment (Node.js + Express).
+
+Install dependencies using npm install.
+
+Configure your .env file with database credentials, cloud storage, and server port.
+
+Ensure your database is properly migrated using Sequelize.
+
+Start the development server with npm run dev or node app.js.
+
+Use an API client like Postman to test the endpoints and simulate frontend interactions.
+
+✅ This version already includes middleware for several routes, especially for CRUD operations related to kos data and image management.
+
+🔐 Passwords are securely hashed using Bcrypt before being stored in the database.
+
+🔐 Authentication and authorization middleware are ready to be enabled for secured access.
 
 ---
 
