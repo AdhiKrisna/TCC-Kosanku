@@ -1,7 +1,6 @@
-import UserModel from "../models/userModel";
+import UserModel from "../models/userModel.js";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-
 dotenv.config();
 
 export const getAccessToken = async (req, res) => {
