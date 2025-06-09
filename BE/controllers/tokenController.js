@@ -52,7 +52,7 @@ export const getAccessToken = async (req, res) => {
                     const accessToken = jwt.sign(
                         safeUserData,
                         accessTokenSecret,
-                        { expiresIn: "15s" }
+                        { expiresIn: "15m" }
                     )
 
                     return res.status(200).json({
