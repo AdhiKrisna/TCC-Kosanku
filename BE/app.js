@@ -12,6 +12,7 @@ app.use(cookieParser());
 
 const allowedOrigins = [
     "http://localhost:5173",
+    "https://kosanku-dot-a-09-450915.uc.r.appspot.com"
 ];
 app.use(cors({
     origin: allowedOrigins,
