@@ -81,6 +81,9 @@ const EditKos = () => {
       for (let i = 0; i < form.images.length; i++) {
         formData.append('image_url', form.images[i]);
       }
+      // Jika tidak ada gambar baru, jangan kirim field image_url
+      // (Sudah dicek di atas, hanya mengirim jika ada file di form.images)
+      // Jika ingin menghapus semua gambar lama, perlu endpoint khusus di backend
       const token = localStorage.getItem('accessToken');
       await axios.put(
         `${API_URL}/${id}`,
@@ -102,7 +105,49 @@ const EditKos = () => {
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: '40px auto', padding: 24, background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px #eee' }}>
+    <div style={{ maxWidth: 600, margin: '40px auto', padding: 24, background: '#fff', borderRadius: 12, boxShadow: '0 2px 8px #eee', position: 'relative' }}>
+      {/* Tombol Info Profile di pojok kiri atas */}
+      <button
+        type="button"
+        onClick={() => navigate('/profile')}
+        style={{
+          position: 'absolute',
+          top: 24,
+          left: 24,
+          background: '#133E87',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 8,
+          padding: '8px 18px',
+          fontSize: 16,
+          fontWeight: 600,
+          cursor: 'pointer',
+          zIndex: 11
+        }}
+      >
+        ℹ️ Profile
+      </button>
+      {/* Tombol Kembali di pojok kanan atas */}
+      <button
+        type="button"
+        onClick={() => navigate('/daftarkos')}
+        style={{
+          position: 'absolute',
+          top: 24,
+          right: 24,
+          background: '#eee',
+          color: '#133E87',
+          border: '1.5px solid #133E87',
+          borderRadius: 8,
+          padding: '8px 18px',
+          fontSize: 16,
+          fontWeight: 600,
+          cursor: 'pointer',
+          zIndex: 10
+        }}
+      >
+        ← Kembali
+      </button>
       <h1 style={{ marginBottom: 24 }}>Edit Kos</h1>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: 12 }}>

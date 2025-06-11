@@ -30,6 +30,7 @@ function LoginAkun() {
       if (!res.ok) throw new Error(data.message || 'Gagal login');
       setSuccess('Login berhasil!');
       localStorage.setItem('accessToken', data.accessToken);
+      localStorage.setItem('userId', data.data.user_id); // Simpan user_id ke localStorage
       setTimeout(() => navigate('/daftarkos'), 1000);
     } catch (err) {
       setError(err.message);
@@ -39,7 +40,49 @@ function LoginAkun() {
   };
 
   return (
-    <div>
+    <div style={{ position: 'relative', padding: 24 }}>
+      {/* Tombol Info Profile di pojok kiri atas */}
+      <button
+        type="button"
+        onClick={() => navigate('/profile')}
+        style={{
+          position: 'absolute',
+          top: 24,
+          left: 24,
+          background: '#133E87',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 8,
+          padding: '8px 18px',
+          fontSize: 16,
+          fontWeight: 600,
+          cursor: 'pointer',
+          zIndex: 11
+        }}
+      >
+        ℹ️ Profile
+      </button>
+      {/* Tombol Kembali ke Home di pojok kanan atas */}
+      <button
+        type="button"
+        onClick={() => navigate('/')}
+        style={{
+          position: 'absolute',
+          top: 24,
+          right: 24,
+          background: '#eee',
+          color: '#133E87',
+          border: '1.5px solid #133E87',
+          borderRadius: 8,
+          padding: '8px 18px',
+          fontSize: 16,
+          fontWeight: 600,
+          cursor: 'pointer',
+          zIndex: 10
+        }}
+      >
+        ← Kembali ke Home
+      </button>
       <h1 className="font-utama">Login</h1>
       <form onSubmit={handleSubmit}>
         <div>

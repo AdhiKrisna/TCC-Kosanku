@@ -15,9 +15,23 @@ const DaftarKos = () => {
 
   useEffect(() => {
     axios.get(API_URL)
-      .then((res) => {
-        console.log('DATA DARI API:', res.data); // Debug: cek data dari API
-        setKosList(res.data.data || []);
+      .then(async (res) => {
+        // Ambil gambar untuk setiap kos
+        const kosWithImages = await Promise.all(
+          (res.data.data || []).map(async (kos) => {
+            try {
+              const imgRes = await fetch(`https://kosanku-tcc-363721261053.us-central1.run.app/kos-images/kos/${kos.kos_id}`);
+              const imgData = await imgRes.json();
+              return {
+                ...kos,
+                images_url: imgData.data || []
+              };
+            } catch {
+              return { ...kos, images_url: [] };
+            }
+          })
+        );
+        setKosList(kosWithImages);
         setLoading(false);
       })
       .catch((err) => {
@@ -36,8 +50,49 @@ const DaftarKos = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div style={{ padding: 24 }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+    <div style={{ padding: 24, position: 'relative' }}>
+      {/* Tombol Info Profile di pojok kiri atas */}
+      <button
+        type="button"
+        onClick={() => navigate('/profile')}
+        style={{
+          position: 'absolute',
+          top: 24,
+          left: 24,
+          background: '#133E87',
+          color: '#fff',
+          border: 'none',
+          borderRadius: 8,
+          padding: '8px 18px',
+          fontSize: 16,
+          fontWeight: 600,
+          cursor: 'pointer',
+          zIndex: 11
+        }}
+      >
+        ℹ️ Profile
+      </button>
+      {/* Tombol Kembali di pojok kanan atas */}
+      <button
+        onClick={() => navigate(-1)}
+        style={{
+          position: 'absolute',
+          top: 24,
+          right: 24,
+          background: '#eee',
+          color: '#133E87',
+          border: '1.5px solid #133E87',
+          borderRadius: 8,
+          padding: '8px 18px',
+          fontSize: 16,
+          fontWeight: 600,
+          cursor: 'pointer',
+          zIndex: 10
+        }}
+      >
+        ← Kembali
+      </button>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginRight: 60 }}>
         <h1>Daftar Kos</h1>
         <button
           style={{
