@@ -1,0 +1,13 @@
+runtime: nodejs20
+instance_class: F1
+
+handlers:
+  - url: /(.*\.(css|js|png|jpg|ico|json|svg|woff2?|txt|webp|ttf))
+    static_files: dist/\1
+    upload: dist/.*\.(css|js|png|jpg|ico|json|svg|woff2?|txt|webp|ttf)
+    secure: always
+
+  - url: /.*
+    static_files: dist/index.html
+    upload: dist/index.html
+    secure: always
